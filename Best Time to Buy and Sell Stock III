@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+   int n=prices.size();
+        int left[n];
+        int right[n];
+        int sumi[n];
+        int res=INT_MIN;
+        int mini=prices[0];
+        int maxi=prices[n-1];
+        left[0]=mini-prices[0];
+        right[n-1]=maxi-prices[n-1];
+
+        for(int i=1;i<n;i++){
+         left[i]=max(prices[i]-mini,left[i-1]);
+         mini=min(mini,prices[i]);
+        }
+        for(int i=n-2;i>=0;i--){
+            right[i]=max(maxi-prices[i],right[i+1]); 
+            maxi=max(maxi,prices[i]);
+        }
+        for(int i=0;i<n;i++){
+           sumi[i]=left[i]+right[i];
+           res=max(res,sumi[i]);
+        }
+        return res;
+    }
+};

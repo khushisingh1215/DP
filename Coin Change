@@ -1,0 +1,62 @@
+// in this question when you solve this question through recursion it give Time Limit Exceeded error and the code is->
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        int ans;
+        int res=INT_MAX;
+        int m=coins.size();
+        // if(m==1 && amount%coins[i]!=0)
+        if(amount==0){
+            return 0;
+
+        }
+        if(amount<0)
+        {
+            return res;
+        }
+        for(int i=0;i<m;i++){
+             if(m==1 && amount%coins[i]!=0){
+                return -1;
+             }
+            if(amount >= coins[i]){
+                ans = coinChange(coins,amount-coins[i]) ;
+            }
+        }
+        if(ans != INT_MAX && ans+1 < res){
+            res=ans+1;
+        }
+        return res;
+    }
+};
+// after TLE using dynamic programing and the solution is->
+class Solution {
+public:
+    int minCoin(vector<int>& coins, int amount, vector<int>& dp) {
+        if (amount == 0) {
+            return 0;
+        }
+        if (amount < 0) {
+            return INT_MAX;
+        }
+        if (dp[amount] != -1) {
+            return dp[amount];
+        }
+        
+        int res = INT_MAX;
+        for (int i = 0; i < coins.size(); i++) {
+            int ans = minCoin(coins, amount - coins[i], dp);
+            if (ans != INT_MAX) {
+                res = min(res, ans + 1);
+            }
+        }
+        
+        dp[amount] = res;
+        return res;
+    }
+
+    int coinChange(vector<int>& coins, int amount) {
+        vector<int> dp(amount + 1, -1);
+        int ans = minCoin(coins, amount, dp);
+        return (ans == INT_MAX) ? -1 : ans;
+    }
+};

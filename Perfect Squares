@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int ps(int n) {
+        if (n == 0) {
+            return 0;
+        }
+        if (n == 1) {
+            return 1;
+        }
+        vector<int> dp(n + 1);
+        dp[0] = 0;
+        dp[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            dp[i] = INT_MAX;
+            for (int j = 1; j * j <= i; j++) {
+                int x = dp[i - j * j] + 1;
+                dp[i] = min(dp[i], x); 
+            }
+        }
+
+        return dp[n]; 
+    }
+
+    int numSquares(int n) {
+        return ps(n);
+    }
+};
